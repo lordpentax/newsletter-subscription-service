@@ -1,0 +1,22 @@
+database:
+  containername: subscription-mysql-docker-container
+  databasename: subscription_db
+  port: 3306
+
+spring:
+    datasource:
+        url: jdbc:mysql://${database.containername}:${database.port}/springboot_examples_db?allowPublicKeyRetrieval=true&useSSL=false
+
+        password: root123
+        username: root
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        hikari:
+          maximum-pool-size: 15
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL5Dialect
+
