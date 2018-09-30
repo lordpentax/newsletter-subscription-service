@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", updatable = false, nullable = false)
     private Long Id;
 
@@ -32,16 +32,13 @@ public class User {
     private String userEmail;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 15)
     private SubscriptionStatus subscriptionStatus;
 
-    @Column(name = "subscribe_at")
     private LocalDate subscribedAt;
 
-    @Column(name = "unsubscribe_at")
     private LocalDate unsubscribedAt;
 
-    protected User() {
+    private User() {
         //this is only for JPA
     }
 

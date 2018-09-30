@@ -12,7 +12,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     User findByUserEmail(final String userEmail);
 
-    @Query(value = "SELECT u FROM User u WHERE u.subscriptionStatus = 'SUBSCRIBED' " +
-            "AND u.subscribedAt = :subscribtiontime")
-    List<User> findAllBySubscribedAt(@Param("subscribtiontime") final LocalDate subscribtiontime);
+    @Query(value = "SELECT u FROM User u WHERE u.subscriptionStatus = 'SUBSCRIBED' AND u.subscribedAt = :subscribedAt")
+    List<User> findUserByName(@Param("subscribedAt") final LocalDate subscribedAt);
 }

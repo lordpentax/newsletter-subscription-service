@@ -8,11 +8,9 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> findById(Long id);
-
     User saveUser(User user);
 
-    User updateUser(final Long id, final User user);
+    Optional<User> findUser(final Long id);
 
     List<User> findAllUsers(final LocalDate subscribedAt);
 

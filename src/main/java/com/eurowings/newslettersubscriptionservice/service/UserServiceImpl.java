@@ -26,34 +26,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(final Long userId) {
-        Optional<User> userEntity = userRepository.findById(userId);
-
-        userEntity.orElseThrow(
-                () -> new UserIdNotFoundException(userId));
-
-        userRepository.save(userEntity.get());
-
-        return userEntity;
-    }
-
-    @Override
     public User saveUser(final User user) {
         return userRepository.save(user);
     }
 
     @Override
-    public User updateUser(final Long userId, final User user) {
-        return userRepository.findById(userId)
-                .map(
-                        userRepository::save
-                ).orElseThrow(
-                        () -> new UserIdNotFoundException(userId));
+    public Optional<User> findUser(final Long userId) {
+        return Optional.of(userRepository.findById(userId)
+                .orElseThrow(
+                        () -> new UserIdNotFoundException(userId)));
     }
 
     @Override
     public List<User> findAllUsers(final LocalDate subscribedAt) {
-        return userRepository.findAllBySubscribedAt(subscribedAt);
+        if (subscribedAt == null) {
+            LOGGER.info("There's no User at this given Time", subscribedAt);
+            throw new RuntimeException(String.format("There's no such user a this given time %s", subscribedAt));
+        }
+        return userRepository.findUserByName(subscribedAt);
     }
 
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static lombok.Lombok.checkNotNull;
 import static org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -51,29 +52,35 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping(value = "/newsletter/user/{user_Id}")
-    public ResponseEntity<User> findUser(@PathVariable final Long user_Id,
-                                         @Valid @RequestBody final User userDto) {
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200, response = String.class,
+                    message = "This endpoint will provide you information if a user is SUBSCRIBED or not" +
+                            "in order to recieved Newsletter"),
 
-        final User user = userService.updateUser(user_Id, userDto);
-
-        if (user == null) {
-            LOGGER.info("No such user with ID: {} ", user.getId());
+            @ApiResponse(code = 404, message = "When a User with the given Id was not found")
+    })
+    @GetMapping(value = "/newsletter/user/{user_Id}")
+    public ResponseEntity<User> findUser(@PathVariable final Long user_Id) {
+        final Optional<User> user = userService.findUser(user_Id);
+        if (!user.isPresent()) {
+            LOGGER.info("No such user with ID: {} ", user.get().getId());
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.ok().body(user.get());
     }
 
     @ApiResponses({
             @ApiResponse(
                     code = 200, response = String.class,
-                    message = "This Endpoint return all existing user who in a given time unsubscribe or subscribe"),
+                    message = "This Endpoint return all existing user who in a given time is subscribe"),
     })
     @GetMapping("/users/{subscribed_at}")
     ResponseEntity<List<User>> getAllUsers(@PathVariable @DateTimeFormat(iso = ISO.DATE) final LocalDate subscribed_at) {
         List<User> users = userService.findAllUsers(subscribed_at);
 
         if (users == null || users.isEmpty()) {
+            LOGGER.info("Ther's no user at this given Date: {}", subscribed_at);
             return ResponseEntity.notFound().build();
         }
 

@@ -1,6 +1,9 @@
 package com.eurowings.newslettersubscriptionservice.subscriptionstatus;
 
-public enum SubscriptionStatus {
+import lombok.ToString;
 
-    SUBSCRIBED, UNSUBSCRIBED
+@ToString
+public enum SubscriptionStatus {
+    SUBSCRIBED,
+    UNSUBSCRIBED
 }
