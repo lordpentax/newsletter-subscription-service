@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +19,8 @@ import java.util.Optional;
 
 import static lombok.Lombok.checkNotNull;
 import static org.springframework.format.annotation.DateTimeFormat.ISO;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @RestController
@@ -49,7 +50,7 @@ public class UserController {
             throw new UserAlreadyExitstException(userDto.getUserEmail());
         }
         userService.saveUser(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(CREATED).build();
     }
 
     @ApiResponses({
@@ -73,17 +74,18 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(
                     code = 200, response = String.class,
-                    message = "This Endpoint return all existing user who in a given time is subscribe"),
+                    message = "This Endpoint return all existing user who in a given time is subscribe.The Time must be" +
+                            "given in iso Dateformat e.g: yyyyy:mm:dd"),
+
+            @ApiResponse(code = 404, message = "When The time is in the future")
     })
     @GetMapping("/users/{subscribed_at}")
     ResponseEntity<List<User>> getAllUsers(@PathVariable @DateTimeFormat(iso = ISO.DATE) final LocalDate subscribed_at) {
         List<User> users = userService.findAllUsers(subscribed_at);
-
-        if (users == null || users.isEmpty()) {
-            LOGGER.info("Ther's no user at this given Date: {}", subscribed_at);
-            return ResponseEntity.notFound().build();
+        if (subscribed_at.isAfter(LocalDate.now())) {
+            LOGGER.info("The Time: {} is in The Future ", subscribed_at);
+            return ResponseEntity.status(NOT_FOUND).build();
         }
-
         return ResponseEntity.ok().body(users);
     }
 }

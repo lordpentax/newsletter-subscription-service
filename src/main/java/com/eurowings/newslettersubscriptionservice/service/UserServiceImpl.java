@@ -39,11 +39,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllUsers(final LocalDate subscribedAt) {
-        if (subscribedAt == null) {
-            LOGGER.info("There's no User at this given Time", subscribedAt);
-            throw new RuntimeException(String.format("There's no such user a this given time %s", subscribedAt));
+        try {
+            if (subscribedAt.isAfter(LocalDate.now())) {
+                throw new RuntimeException("The time must not be in the future");
+            }
+        } catch (Exception e) {
+            LOGGER.info("The given time was not valid cause is in the future", e);
         }
-        return userRepository.findUserByName(subscribedAt);
+        return userRepository.findBySubscribedAt(subscribedAt);
     }
 
     @Override
