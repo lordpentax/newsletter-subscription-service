@@ -42,55 +42,48 @@ public class User {
         //this is only for JPA
     }
 
-
-    public static final class UserEntityBuilder {
+    public static final class UserBuilder {
         private Long Id;
         private String name;
         private String userEmail;
         private SubscriptionStatus subscriptionStatus;
         private LocalDate subscribedAt;
         private LocalDate unsubscribedAt;
-        private boolean isSubscribed;
 
-        private UserEntityBuilder() {
+        private UserBuilder() {
         }
 
-        public static UserEntityBuilder anUserEntity() {
-            return new UserEntityBuilder();
+        public static UserBuilder anUser() {
+            return new UserBuilder();
         }
 
-        public UserEntityBuilder withId(Long Id) {
+        public UserBuilder withId(Long Id) {
             this.Id = Id;
             return this;
         }
 
-        public UserEntityBuilder withName(String name) {
+        public UserBuilder withName(String name) {
             this.name = name;
             return this;
         }
 
-        public UserEntityBuilder withUserEmail(String userEmail) {
+        public UserBuilder withUserEmail(String userEmail) {
             this.userEmail = userEmail;
             return this;
         }
 
-        public UserEntityBuilder withSubscriptionStatus(SubscriptionStatus subscriptionStatus) {
+        public UserBuilder withSubscriptionStatus(SubscriptionStatus subscriptionStatus) {
             this.subscriptionStatus = subscriptionStatus;
             return this;
         }
 
-        public UserEntityBuilder withSubscribedAt(LocalDate subscribedAt) {
+        public UserBuilder withSubscribedAt(LocalDate subscribedAt) {
             this.subscribedAt = subscribedAt;
             return this;
         }
 
-        public UserEntityBuilder withUnsubscribedAt(LocalDate unsubscribedAt) {
+        public UserBuilder withUnsubscribedAt(LocalDate unsubscribedAt) {
             this.unsubscribedAt = unsubscribedAt;
-            return this;
-        }
-
-        public UserEntityBuilder withIsSubscribed(boolean isSubscribed) {
-            this.isSubscribed = isSubscribed;
             return this;
         }
 

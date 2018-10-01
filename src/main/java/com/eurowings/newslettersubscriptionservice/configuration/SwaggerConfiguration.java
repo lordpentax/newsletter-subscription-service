@@ -36,8 +36,9 @@ public class SwaggerConfiguration {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("NS Service " + version)
-                .description("This Service should provides an API that stores if a user is subscribed or unsubscribe " +
-                        "to a given newsletter ")
+                .description("This API provides information about user's subscribtion to an specific newsletter,the user" +
+                        " should be persisted if he is subscribe or not and then been asked by subscribtion or " +
+                        "not, if the user should recieved a given newsletter ")
                 .contact(new Contact("Cristian Fernandez", null,
                         "cristian.fernandez@gmx.de"))
                 .build();
