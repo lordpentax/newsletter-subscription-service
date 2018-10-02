@@ -19,7 +19,6 @@ import java.util.Optional;
 
 import static lombok.Lombok.checkNotNull;
 import static org.springframework.format.annotation.DateTimeFormat.ISO;
-import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -43,14 +42,14 @@ public class UserController {
 
             @ApiResponse(code = 409, message = "user with the given email address already exists")
     })
-    @PostMapping(value = "/newsletter", consumes = APPLICATION_JSON_UTF8_VALUE,
+    @PostMapping(value = "subscritions/users", consumes = APPLICATION_JSON_UTF8_VALUE,
             produces = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> createUser(@Valid @RequestBody final User userDto) {
         if (userService.exists(userDto)) {
             throw new UserAlreadyExitstException(userDto.getUserEmail());
         }
-        userService.saveUser(userDto);
-        return ResponseEntity.status(CREATED).build();
+
+        return ResponseEntity.ok().body(userService.saveUser(userDto));
     }
 
     @ApiResponses({
@@ -61,7 +60,7 @@ public class UserController {
 
             @ApiResponse(code = 404, message = "When a User with the given Id was not found")
     })
-    @GetMapping(value = "/newsletter/user/{user_Id}")
+    @GetMapping(value = "subscription/newsletter/users/{user_Id}")
     public ResponseEntity<User> findUser(@PathVariable final Long user_Id) {
         final Optional<User> user = userService.findUser(user_Id);
         if (!user.isPresent()) {
@@ -79,13 +78,13 @@ public class UserController {
 
             @ApiResponse(code = 404, message = "When The time is in the future")
     })
-    @GetMapping("/users/{subscribed_at}")
+    @GetMapping("subscribtion/users/{subscribed_at}")
     ResponseEntity<List<User>> getAllUsers(@PathVariable @DateTimeFormat(iso = ISO.DATE) final LocalDate subscribed_at) {
-        List<User> users = userService.findAllUsers(subscribed_at);
         if (subscribed_at.isAfter(LocalDate.now())) {
             LOGGER.info("The Time: {} is in The Future ", subscribed_at);
             return ResponseEntity.status(NOT_FOUND).build();
         }
+        List<User> users = userService.findAllUsers(subscribed_at);
         return ResponseEntity.ok().body(users);
     }
 }

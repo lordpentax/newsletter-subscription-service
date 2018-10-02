@@ -14,7 +14,6 @@ import java.util.Random;
 
 import static com.eurowings.newslettersubscriptionservice.model.User.UserBuilder.anUser;
 import static com.eurowings.newslettersubscriptionservice.subscriptionstatus.SubscriptionStatus.SUBSCRIBED;
-import static java.time.LocalDate.now;
 import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -46,7 +45,6 @@ public class NewsletterSubscriptionServiceTests {
                 .withUserEmail("m.mustermann@dev.org")
                 .withId(userId)
                 .withSubscriptionStatus(SUBSCRIBED)
-                .withSubscribedAt(now())
                 .build();
         //WHEN
         when(userRepository.save(any(User.class))).thenReturn(user);

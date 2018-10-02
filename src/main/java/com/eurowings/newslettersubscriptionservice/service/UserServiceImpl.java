@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.eurowings.newslettersubscriptionservice.subscriptionstatus.SubscriptionStatus.SUBSCRIBED;
+import static java.time.LocalDate.now;
 import static lombok.Lombok.checkNotNull;
 
 @Service(value = "userService")
@@ -27,6 +29,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(final User user) {
+        if (user.getSubscriptionStatus().equals(SUBSCRIBED)) {
+            user.setSubscribedAt(now());
+        } else {
+            user.setUnsubscribedAt(now());
+        }
         return userRepository.save(user);
     }
 
@@ -40,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUsers(final LocalDate subscribedAt) {
         try {
-            if (subscribedAt.isAfter(LocalDate.now())) {
+            if (subscribedAt.isAfter(now())) {
                 throw new RuntimeException("The time must not be in the future");
             }
         } catch (Exception e) {

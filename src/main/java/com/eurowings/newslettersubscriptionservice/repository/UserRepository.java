@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUserEmail(final String userEmail);
 
-    @Query(value = "SELECT u FROM User u WHERE u.subscriptionStatus = 'SUBSCRIBED' AND u.subscribedAt <= :subscribedAt " +
-            "OR u.subscribedAt >= :subscribedAt order by u.subscribedAt asc ")
+    @Query(value = "SELECT u FROM User u WHERE u.subscriptionStatus = 'SUBSCRIBED' AND u.subscribedAt < :subscribedAt " +
+            "OR u.subscribedAt > :subscribedAt order by u.subscribedAt asc ")
     List<User> findBySubscribedAt(@Param("subscribedAt") final LocalDate subscribedAt);
 }

@@ -5,7 +5,7 @@
 ## Startup 
 * Please Checkout The application,  run on your commandline the **_docker-compose.yml_** skript: as _**docker-compose build**_ 
 This will create the Docker image of the service. After the image is created you can run _**docker-compose up**_. This
-will start the application on `port 8087`.
+will start the application on `port 8088`.
 
 ## Technologies
 
@@ -19,7 +19,7 @@ documentation.
 
 ## Actuator
 * In order to see if the application is running currectly, you can assure this by making a get request on the
-given url: **_`localhost://{portnumber}/actuator/health`_**, you shoul become a report of `**UP**`
+given url: **_`http://localhost:{portnumber}/actuator/health`_**, you shoul become a report of **UP**
 
 ## DB Entrypoint
  * In order to dumb data to the databes, an scv File with 1000 users are store in the classpath, this data will be 
