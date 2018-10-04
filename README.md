@@ -10,12 +10,18 @@ will start the application on `port 8088`.
 ## Technologies
 
 * [Spring Boot](https://projects.spring.io/spring-boot/) - Microservice framework
+* [Lombok](https://projectlombok.org/) -  Never write another setter, getter or equals method again
 * [Maven](https://maven.apache.org/) - Dependency management
 * [Swagger IO](http://swagger.io/) -  Swagger API documentation
 
 ##API Documentation
 * The API-Doc can be seen in this **_`URL: http://localhost:portnumber/apidoc`_**, you will be redirected to the given 
 documentation.
+
+##Lombok Annotation Processor Activation
+* Do not forget on you IDE to enable Annotation processing. On intellIJ go to **`Preference | Build, Execution , 
+Deployment| -> Compiler -> Annotation Processor and there acticvate the feature enable Annotation processing`**.
+  
 
 ## Actuator
 * In order to see if the application is running currectly, you can assure this by making a get request on the
