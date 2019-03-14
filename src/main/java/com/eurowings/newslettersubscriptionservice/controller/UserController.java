@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -79,12 +80,13 @@ public class UserController {
             @ApiResponse(code = 404, message = "When The time is in the future")
     })
     @GetMapping("subscribtion/users/{subscribed_at}")
-    ResponseEntity<List<User>> getAllUsers(@PathVariable @DateTimeFormat(iso = ISO.DATE) final LocalDate subscribed_at) {
+    ResponseEntity<List<User>> getAllUsers(@PathVariable @DateTimeFormat(iso = ISO.DATE) final LocalDate subscribed_at,
+                                           final Pageable pageable  ) {
         if (subscribed_at.isAfter(LocalDate.now())) {
             LOGGER.info("The Time: {} is in The Future ", subscribed_at);
             return ResponseEntity.status(NOT_FOUND).build();
         }
-        List<User> users = userService.findAllUsers(subscribed_at);
+        List<User> users = userService.findAllUsers(subscribed_at, pageable);
         return ResponseEntity.ok().body(users);
     }
 }

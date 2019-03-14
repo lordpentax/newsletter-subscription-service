@@ -6,6 +6,8 @@ import com.eurowings.newslettersubscriptionservice.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -45,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUsers(final LocalDate subscribedAt) {
+    public List<User> findAllUsers(final LocalDate subscribedAt, final Pageable pageable) {
         try {
             if (subscribedAt.isAfter(now())) {
                 throw new RuntimeException("The time must not be in the future");
@@ -53,11 +55,15 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             LOGGER.info("The given time was not valid cause is in the future", e);
         }
-        return userRepository.findBySubscribedAt(subscribedAt);
+        return userRepository.findBySubscribedAt(subscribedAt,pageable);
     }
 
     @Override
     public boolean exists(User user) {
         return userRepository.findByUserEmail(user.getUserEmail()) != null;
+    }
+
+    private Pageable createPageRequest() {
+        return PageRequest.of(0, 30);
     }
 }

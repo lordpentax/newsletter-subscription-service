@@ -1,6 +1,7 @@
 package com.eurowings.newslettersubscriptionservice.service;
 
 import com.eurowings.newslettersubscriptionservice.model.User;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +13,7 @@ public interface UserService {
 
     Optional<User> findUser(final Long id);
 
-    List<User> findAllUsers(final LocalDate subscribedAt);
+    List<User> findAllUsers(final LocalDate subscribedAt, final Pageable pageable);
 
     boolean exists(final User user);
 }
